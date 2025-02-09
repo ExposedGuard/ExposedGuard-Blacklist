@@ -1,3 +1,10 @@
+function isWhitelisted(discordID)
+    for _, id in ipairs(Config['whitelist']) do
+        if id == discordID then return true end
+    end
+    return false
+end
+
 AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     deferrals.defer()
     deferrals.update("[EXPOSEDGUARD]: Verifying your Discord ID. Please wait...")
@@ -41,13 +48,17 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
         local leak = data['leak'][1]
         
         if leak['blacklistet'] == 1 then 
-            print(string.format("[EXPOSEDGUARD] Blocked connection: %s", GetPlayerName(player)))
-            deferrals.done(string.format(
-                "\n\n[EXPOSEDGUARD] Access Denied\n\nYour account has been flagged for prohibited activities.\nDetected Issue: %s\n\nIf you believe this is an error, please contact support for assistance.\nDiscord: https://discord.exposedguard.dk/", 
-                leak.cheat or "Unknown"
-            ))
-            Logger({ ['type'] = 'blocked', ['reason'] = "Blocked", ['cheat'] = leak['cheat'], ['title'] = "**BLOCKED CONNECTION**", ['name'] = name, ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['ip'] = identifier['ip_address'] })
-            return
+            if not isWhitelisted(identifier['discord']) then
+                print(string.format("[EXPOSEDGUARD] Blocked connection: %s", GetPlayerName(player)))
+                deferrals.done(string.format(
+                    "\n\n[EXPOSEDGUARD] Access Denied\n\nYour account has been flagged for prohibited activities.\nDetected Issue: %s\n\nIf you believe this is an error, please contact support for assistance.\nDiscord: https://discord.exposedguard.dk/", 
+                    leak.cheat or "Unknown"
+                ))
+                Logger({ ['type'] = 'blocked', ['reason'] = "Blocked", ['cheat'] = leak['cheat'], ['title'] = "**BLOCKED CONNECTION**", ['name'] = name, ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['ip'] = identifier['ip_address'] })
+                return
+            else
+                deferrals.done()
+            end
         else
             deferrals.done()
         end

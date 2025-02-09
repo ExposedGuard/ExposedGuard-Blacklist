@@ -1,3 +1,10 @@
+function isWhitelisted(discordID)
+    for _, id in ipairs(Config['whitelist']) do
+        if id == discordID then return true end
+    end
+    return false
+end
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(5000)
@@ -32,10 +39,12 @@ Citizen.CreateThread(function()
                     local leak = responseData['leak'][1]
                     
                     if leak['blacklistet'] == 1 then
-                        if playerData['id'] then
-                            print(string.format("[EXPOSEDGUARD] Player %s was detected as a cheater with leak information: %s", playerData['name'] or "Unknown", leak['cheat'] or "N/A"))
-                            Logger({ ['type'] = 'disconnect', ['reason'] = "Exposed",['cheat'] = leak['cheat'],['title'] = "**PLAYER DISCONNECTED**", ['name'] = GetPlayerName(playerData['id']), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['ip'] = identifier['ip_address'] })
-                            DropPlayer(playerData['id'], "[EXPOSEDGUARD] - You have been identified as a cheater based on leaked information and have been kicked. Please reconnect for more details.")
+                        if not isWhitelisted(identifier['discord']) then
+                            if playerData['id'] then
+                                print(string.format("[EXPOSEDGUARD] Player %s was detected as a cheater with leak information: %s", playerData['name'] or "Unknown", leak['cheat'] or "N/A"))
+                                Logger({ ['type'] = 'disconnect', ['reason'] = "Exposed",['cheat'] = leak['cheat'],['title'] = "**PLAYER DISCONNECTED**", ['name'] = GetPlayerName(playerData['id']), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['ip'] = identifier['ip_address'] })
+                                DropPlayer(playerData['id'], "[EXPOSEDGUARD] - You have been identified as a cheater based on leaked information and have been kicked. Please reconnect for more details.")
+                            end
                         end
                     end
                 end, 'GET')
