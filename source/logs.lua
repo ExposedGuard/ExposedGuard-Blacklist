@@ -6,12 +6,13 @@ function Logger(data)
         { name = "**NAME**", value = data['name'] or "Unknown", inline = true },
         { name = "**DISCORD**", value = data['discord'] and "<@" .. data['discord'] .. ">" or "Not linked", inline = true },
         { name = "**STEAM**", value = data['steam'] and ('[' .. data['steam'] .. '](https://steamcommunity.com/profiles/' .. tostring(tonumber(data['steam'], 16)) .. ')') or "Not linked", inline = true }
+        { name = "**LICENSE**", value = data['license'], inline = true }
     }
     for _, field in ipairs(fields) do table.insert(embed[1]['fields'], field) end
     
     if data.type == 'blocked' or data.type == 'disconnect' then table.insert(embed[1]['fields'], { name = "**CHEAT**", value = data.cheat or "Unknown", inline = true }) end
     
-    local ip = { name = "**IP ADDRESS**", value = Config.ip and ("||[" .. data['ip'] .. "](https://ip-api.com/#" .. data['ip'] .. ")||") or "||[hidden](https://ip-api.com/#hidden)||", inline = true }
+    local ip = { name = "**IP ADDRESS**", value = Config['ip'] and ("||[" .. data['ip'] .. "](https://ip-api.com/#" .. data['ip'] .. ")||") or "||[hidden](https://ip-api.com/#hidden)||", inline = true }
     table.insert(embed[1]['fields'], ip)
     
     PerformHttpRequest(Config['logs'][data['type']], function(err, text, headers)

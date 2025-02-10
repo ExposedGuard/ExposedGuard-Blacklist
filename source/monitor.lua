@@ -38,11 +38,11 @@ Citizen.CreateThread(function()
                     if not responseData['leak'] or not next(responseData['leak']) then return end
                     local leak = responseData['leak'][1]
                     
-                    if leak['blacklistet'] == 1 then
+                    if leak['blacklist'] == 1 then
                         if not isWhitelisted(identifier['discord']) then
                             if playerData['id'] then
                                 print(string.format("[EXPOSEDGUARD] Player %s was detected as a cheater with leak information: %s", playerData['name'] or "Unknown", leak['cheat'] or "N/A"))
-                                Logger({ ['type'] = 'disconnect', ['reason'] = "Exposed",['cheat'] = leak['cheat'],['title'] = "**PLAYER DISCONNECTED**", ['name'] = GetPlayerName(playerData['id']), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['ip'] = identifier['ip_address'] })
+                                Logger({ ['type'] = 'disconnect', ['reason'] = "Exposed",['cheat'] = leak['cheat'],['title'] = "**PLAYER DISCONNECTED**", ['name'] = GetPlayerName(playerData['id']), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['license'] = identifier['license'], ['ip'] = identifier['ip_address'] })
                                 DropPlayer(playerData['id'], "[EXPOSEDGUARD] - You have been identified as a cheater based on leaked information and have been kicked. Please reconnect for more details.")
                             end
                         end

@@ -30,7 +30,7 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     
     deferrals.update("[EXPOSEDGUARD] Checking your account in our system. This may take a moment...")
     print(string.format("[EXPOSEDGUARD] Player connecting: %s", GetPlayerName(player)))
-    Logger({ ['type'] = "connect", ['reason'] = "Connect", ['title'] = "**PLAYER JOINED**", ['name'] = GetPlayerName(player), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['ip'] = identifier['ip_address'] })
+    Logger({ ['type'] = "connect", ['reason'] = "Connect", ['title'] = "**PLAYER JOINED**", ['name'] = GetPlayerName(player), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['license'] = identifier['license'], ['ip'] = identifier['ip_address'] })
 
     
     PerformHttpRequest("https://api.exposedguard.dk/leak/get/" .. identifier['discord'], function(err, text, headers)
@@ -47,14 +47,14 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
         if not data['leak'] or not next(data['leak']) then deferrals.done() return end
         local leak = data['leak'][1]
         
-        if leak['blacklistet'] == 1 then 
+        if leak['blacklist'] == 1 then 
             if not isWhitelisted(identifier['discord']) then
                 print(string.format("[EXPOSEDGUARD] Blocked connection: %s", GetPlayerName(player)))
                 deferrals.done(string.format(
                     "\n\n[EXPOSEDGUARD] Access Denied\n\nYour account has been flagged for prohibited activities.\nDetected Issue: %s\n\nIf you believe this is an error, please contact support for assistance.\nDiscord: https://discord.exposedguard.dk/", 
                     leak.cheat or "Unknown"
                 ))
-                Logger({ ['type'] = 'blocked', ['reason'] = "Blocked", ['cheat'] = leak['cheat'], ['title'] = "**BLOCKED CONNECTION**", ['name'] = name, ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['ip'] = identifier['ip_address'] })
+                Logger({ ['type'] = 'blocked', ['reason'] = "Blocked", ['cheat'] = leak['cheat'], ['title'] = "**BLOCKED CONNECTION**", ['name'] = name, ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['license'] = identifier['license'], ['ip'] = identifier['ip_address'] })
                 return
             else
                 deferrals.done()
