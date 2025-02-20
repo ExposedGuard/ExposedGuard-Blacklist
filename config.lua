@@ -1,6 +1,6 @@
 Config = {
-    ['discord'] = 'https://discord.exposedguard.dk/', -- Discord Invite Link (Invite link to the Discord server)
-    ['locales'] = 'da', -- Language of the script (can be changed in the locales file)
+    ['discord'] = 'https://discord.gg/example', -- Discord Invite Link (Invite link to the Discord server)
+    ['locales'] = 'en', -- Language of the script (can be changed in the locales file)
     ['ip'] = true, -- IP Address ned to show in logs (true: shows, false: hide)
     ['logs'] = {
         ['connect'] = "", -- Player Connect (Discord Webhook)
