@@ -5,7 +5,7 @@ function Logger(data)
         { name = "**REASON**", value = data['reason'] or "Not specified", inline = true },
         { name = "**NAME**", value = data['name'] or "Unknown", inline = true },
         { name = "**DISCORD**", value = data['discord'] and "<@" .. data['discord'] .. ">" or "Not linked", inline = true },
-        { name = "**STEAM**", value = data['steam'] and ('[' .. data['steam'] .. '](https://steamcommunity.com/profiles/' .. tostring(tonumber(data['steam'], 16)) .. ')') or "Not linked", inline = true }
+        { name = "**STEAM**", value = data['steam'] and ('[' .. data['steam'] .. '](https://steamcommunity.com/profiles/' .. tostring(tonumber(data['steam'], 16)) .. ')') or "Not linked", inline = true },
         { name = "**LICENSE**", value = data['license'], inline = true }
     }
     for _, field in ipairs(fields) do table.insert(embed[1]['fields'], field) end

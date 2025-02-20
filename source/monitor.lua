@@ -43,7 +43,7 @@ Citizen.CreateThread(function()
                             if playerData['id'] then
                                 print(string.format("[EXPOSEDGUARD] Player %s was detected as a cheater with leak information: %s", playerData['name'] or "Unknown", leak['cheat'] or "N/A"))
                                 Logger({ ['type'] = 'disconnect', ['reason'] = "Exposed",['cheat'] = leak['cheat'],['title'] = "**PLAYER DISCONNECTED**", ['name'] = GetPlayerName(playerData['id']), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['license'] = identifier['license'], ['ip'] = identifier['ip_address'] })
-                                DropPlayer(playerData['id'], "[EXPOSEDGUARD] - You have been identified as a cheater based on leaked information and have been kicked. Please reconnect for more details.")
+                                DropPlayer(playerData['id'], "[EXPOSEDGUARD] - "..Locales[Config['locales']]['kick'])
                             end
                         end
                     end

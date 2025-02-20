@@ -7,7 +7,7 @@ end
 
 AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     deferrals.defer()
-    deferrals.update("[EXPOSEDGUARD]: Verifying your Discord ID. Please wait...")
+    deferrals.update("[EXPOSEDGUARD]: "..Locales[Config['locales']]['deferrals']['1'])
     
     local player = source
     local identifiers = GetPlayerIdentifiers(player)
@@ -26,23 +26,22 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     end
     
     if not identifier['discord'] or identifier['discord'] == "" then
-        deferrals.done("[EXPOSEDGUARD] A valid Discord identifier is required to join this server. Please ensure Discord is running and try again.") return end
+        deferrals.done("[EXPOSEDGUARD] "..Locales[Config['locales']]['errors']['discord']) return end
     
-    deferrals.update("[EXPOSEDGUARD] Checking your account in our system. This may take a moment...")
+    deferrals.update("[EXPOSEDGUARD] "..Locales[Config['locales']]['deferrals']['2'])
     print(string.format("[EXPOSEDGUARD] Player connecting: %s", GetPlayerName(player)))
     Logger({ ['type'] = "connect", ['reason'] = "Connect", ['title'] = "**PLAYER JOINED**", ['name'] = GetPlayerName(player), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['license'] = identifier['license'], ['ip'] = identifier['ip_address'] })
-
     
     PerformHttpRequest("https://api.exposedguard.dk/leak/get/" .. identifier['discord'], function(err, text, headers)
         if err ~= 200 then print("[EXPOSEDGUARD] HTTP Request Failed with error code: " .. err)
-            deferrals.done("[EXPOSEDGUARD]: We are currently unable to verify your account. Please try again later.") return end
+            deferrals.done("[EXPOSEDGUARD]: "..Locales[Config['locales']]['errors']['api']) return end
     
         if not text or text == "" then print("[EXPOSEDGUARD] Empty response from API")
-            deferrals.done("[EXPOSEDGUARD]: We are currently unable to verify your account. Please try again later.") return end
+            deferrals.done("[EXPOSEDGUARD]: "..Locales[Config['locales']]['errors']['api']) return end
         
         local data = json.decode(text)
         if not data then print("[EXPOSEDGUARD]: Failed to decode JSON response") 
-            deferrals.done("[EXPOSEDGUARD]: An error occurred while processing your request. Please try again later.") return end
+            deferrals.done("[EXPOSEDGUARD]: "..Locales[Config['locales']]['errors']['json']) return end
 
         if not data['leak'] or not next(data['leak']) then deferrals.done() return end
         local leak = data['leak'][1]
@@ -50,10 +49,21 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
         if leak['blacklist'] == 1 then 
             if not isWhitelisted(identifier['discord']) then
                 print(string.format("[EXPOSEDGUARD] Blocked connection: %s", GetPlayerName(player)))
-                deferrals.done(string.format(
-                    "\n\n[EXPOSEDGUARD] Access Denied\n\nYour account has been flagged for prohibited activities.\nDetected Issue: %s\n\nIf you believe this is an error, please contact support for assistance.\nDiscord: https://discord.exposedguard.dk/", 
-                    leak.cheat or "Unknown"
-                ))
+
+                local card = {
+                    type = "AdaptiveCard",
+                    version = "1.3",
+                    body = {
+                        { type = "TextBlock", text = "ExposedGuard.dk", weight = "Default", size = "Medium", wrap = true, horizontalAlignment = "Center", spacing = "Medium" },
+                        { type = "TextBlock", text = "You are blacklisted by ExposedGuard", weight = "Bolder", size = "ExtraLarge", wrap = true, horizontalAlignment = "Center", spacing = "None" },
+                        { type = "ActionSet", horizontalAlignment = "Center", spacing = "Medium", actions = { { type = "Action.Submit", title = "Associated Cheat: " .. leak['cheat'], isEnabled = false, data = {}}}},
+                        { type = "TextBlock", text = "If you believe this is a mistake or have any questions open a ticketen on our Discord server.", weight = "Bolder", color = "Warning", size = "Medium", wrap = true, horizontalAlignment = "Center", spacing = "Medium" },
+                        { type = "ActionSet", horizontalAlignment = "Center", spacing = "Medium", actions = {{ type = "Action.OpenUrl", title = "exposedguard.dk", url = "https://www.exposedguard.dk", iconUrl  = 'https://cdn.discordapp.com/emojis/1334893976972558417.webp?size=80' }, { type = "Action.OpenUrl", title = "ExposedGuard Discord", url = "https://discord.exposedguard.dk", iconUrl  = 'https://cdn.discordapp.com/emojis/1334893976972558417.webp?size=80' }, { type = "Action.OpenUrl", title = "Discord", url = Config['discord'], iconUrl  = 'https://static.vecteezy.com/system/resources/previews/006/892/625/large_2x/discord-logo-icon-editorial-free-vector.jpg'}}}
+                    }
+               }
+                
+               deferrals.presentCard(card)
+                
                 Logger({ ['type'] = 'blocked', ['reason'] = "Blocked", ['cheat'] = leak['cheat'], ['title'] = "**BLOCKED CONNECTION**", ['name'] = name, ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['license'] = identifier['license'], ['ip'] = identifier['ip_address'] })
                 return
             else

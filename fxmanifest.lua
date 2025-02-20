@@ -6,4 +6,4 @@ description 'Lavet af ExposedGuard'
 version '0.0.0'
 
 server_scripts { 'source/*.lua' }
-shared_scripts { 'config.lua' }
+shared_scripts { 'config.lua', 'locales.lua' }
