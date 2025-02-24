@@ -14,7 +14,7 @@ Locales = {
     ['da'] = {
         ['kick'] = "Du er blevet identificeret som en snyder baseret på lækket information og er blevet smidt ud. Prøv at tilslutte igen for flere detaljer.",
         ['deferrals'] = {
-            ['1'] = 'Bekræfter din Discord ID. Vent venligst...',
+            ['1'] = 'Bekræfter dit Discord ID. Vent venligst...',
             ['2'] = 'Kontrollerer din konto i vores system. Dette kan tage et øjeblik...'
         },
         ['errors'] = {
