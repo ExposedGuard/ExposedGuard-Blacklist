@@ -52,19 +52,25 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
 
                 local card = {
                     type = "AdaptiveCard",
-                    version = "1.3",
+                    version = "1.0",
                     body = {
                         { type = "TextBlock", text = "ExposedGuard.dk", weight = "Default", size = "Medium", wrap = true, horizontalAlignment = "Center", spacing = "Medium" },
                         { type = "TextBlock", text = "You are blacklisted by ExposedGuard", weight = "Bolder", size = "ExtraLarge", wrap = true, horizontalAlignment = "Center", spacing = "None" },
-                        { type = "ActionSet", horizontalAlignment = "Center", spacing = "Medium", actions = { { type = "Action.Submit", title = "Associated Cheat: " .. leak['cheat'], isEnabled = false, data = {}}}},
-                        { type = "TextBlock", text = "If you believe this is a mistake or have any questions open a ticketen on our Discord server.", weight = "Bolder", color = "Warning", size = "Medium", wrap = true, horizontalAlignment = "Center", spacing = "Medium" },
-                        { type = "ActionSet", horizontalAlignment = "Center", spacing = "Medium", actions = {{ type = "Action.OpenUrl", title = "exposedguard.dk", url = "https://www.exposedguard.dk", iconUrl  = 'https://cdn.discordapp.com/emojis/1334893976972558417.webp?size=80' }, { type = "Action.OpenUrl", title = "ExposedGuard Discord", url = "https://discord.exposedguard.dk", iconUrl  = 'https://cdn.discordapp.com/emojis/1334893976972558417.webp?size=80' }, { type = "Action.OpenUrl", title = "Discord", url = Config['discord'], iconUrl  = 'https://static.vecteezy.com/system/resources/previews/006/892/625/large_2x/discord-logo-icon-editorial-free-vector.jpg'}}}
+                        { type = "ActionSet", horizontalAlignment = "Center", spacing = "Medium", actions = { { type = "Action.Submit", title = "Associated Cheat: " .. leak['cheat'], isEnabled = false, data = {} } } },
+                        { type = "TextBlock", text = "If you believe this is a mistake or have any questions open a ticket on our Discord server.", weight = "Bolder", color = "Warning", size = "Medium", wrap = true, horizontalAlignment = "Center", spacing = "Medium" },
+                        { type = "ActionSet", horizontalAlignment = "Center", spacing = "Medium", actions = {
+                            { type = "Action.OpenUrl", title = "ExposedGuard.dk", url = "https://www.exposedguard.dk", iconUrl  = 'https://cdn.discordapp.com/emojis/1334893976972558417.webp?size=80' },
+                            { type = "Action.OpenUrl", title = "ExposedGuard Discord", url = "https://discord.exposedguard.dk", iconUrl  = 'https://cdn.discordapp.com/emojis/1334893976972558417.webp?size=80' },
+                            { type = "Action.OpenUrl", title = "Discord", url = Config['discord'], iconUrl  = 'https://static.vecteezy.com/system/resources/previews/006/892/625/large_2x/discord-logo-icon-editorial-free-vector.jpg' }
+                        }}
                     }
-               }
-                
-               deferrals.presentCard(card)
+                }
+
+                Wait(150)
+                deferrals.presentCard(json.encode(card))
                 
                 Logger({ ['type'] = 'blocked', ['reason'] = "Blocked", ['cheat'] = leak['cheat'], ['title'] = "**BLOCKED CONNECTION**", ['name'] = name, ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['license'] = identifier['license'], ['ip'] = identifier['ip_address'] })
+                Wait(5000)
                 return
             else
                 deferrals.done()

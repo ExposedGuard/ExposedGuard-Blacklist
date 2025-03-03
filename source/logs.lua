@@ -1,9 +1,9 @@
 function Logger(data)
-    local embed = { { title = data.title or "No Title Given", color = data.color or 0x1a1a1a, footer = { text = os.date("%A, %d %B %Y, %X") }, fields = {} }}
+    local embed = { { title = data['title'] or "No Title Given", color = data['color'] or 0x1a1a1a, footer = { text = os.date("%A, %d %B %Y, %X") }, fields = {} }}
     
     local fields = {
         { name = "**REASON**", value = data['reason'] or "Not specified", inline = true },
-        { name = "**NAME**", value = data['name'] or "Unknown", inline = true },
+        { name = "**NAME**", value = data['name'] or "Unk   nown", inline = true },
         { name = "**DISCORD**", value = data['discord'] and "<@" .. data['discord'] .. ">" or "Not linked", inline = true },
         { name = "**STEAM**", value = data['steam'] and ('[' .. data['steam'] .. '](https://steamcommunity.com/profiles/' .. tostring(tonumber(data['steam'], 16)) .. ')') or "Not linked", inline = true },
         { name = "**LICENSE**", value = data['license'], inline = true }
