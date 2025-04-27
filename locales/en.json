@@ -1,0 +1,12 @@
+{
+    "kick": "You have been identified as a cheater based on leaked information and have been kicked. Please reconnect for more details.",
+    "deferrals":  {
+        "1": "Verifying your Discord ID. Please wait...",
+        "2": "Checking your account in our system. This may take a moment..."
+    },
+    "errors": {
+        "api": "We are currently unable to verify your account. Please try again later.",
+        "discord": "A valid Discord identifier is required to join this server. Please ensure Discord is running and try again.",
+        "json": "An error occurred while processing your request. Please try again later."
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "kick": "Du er blevet identificeret som en snyder baseret på lækket information og er blevet smidt ud. Prøv at tilslutte igen for flere detaljer.",
+    "deferrals":  {
+        "1": "Bekræfter dit Discord ID. Vent venligst...",
+        "2": "Kontrollerer din konto i vores system. Dette kan tage et øjeblik..."
+    },
+    "errors": {
+        "api": "Vi kan i øjeblikket ikke verificere din konto. Prøv igen senere.",
+        "discord": "En gyldig Discord-identifikator er påkrævet for at deltage i denne server. Sørg for, at Discord kører, og prøv igen.",
+        "json": "Der opstod en fejl under behandlingen af din anmodning. Prøv igen senere."
+    }
+}

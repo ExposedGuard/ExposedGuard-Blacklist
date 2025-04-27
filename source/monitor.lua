@@ -41,10 +41,10 @@ Citizen.CreateThread(function()
                         if not isWhitelisted(identifier['discord']) then
                             print(string.format("[EXPOSEDGUARD] Player %s was detected as a cheater with leak information: %s", GetPlayerName(playerId) or "Unknown", leak['cheat'] or "N/A"))
                             Logger({ ['type'] = 'disconnect', ['reason'] = "Exposed",['cheat'] = leak['cheat'],['title'] = "**PLAYER DISCONNECTED**", ['name'] = GetPlayerName(playerId), ['discord'] = identifier['discord'], ['steam'] = identifier['steam'], ['license'] = identifier['license'], ['ip'] = identifier['ip_address'] })
-                            DropPlayer(playerId, "[EXPOSEDGUARD] - "..Locales[Config['locales']]['kick'])
+                            DropPlayer(playerId, "[EXPOSEDGUARD] - "..getLocaleString('kick'))
                         end
                     end
-                end, 'GET')
+                end, 'GET', '', { ['User-Agent'] = 'exposedguard-d44bbd-eb4-d3-ca18187-4f265e-892e9-ac91-8c-b2908-b4c0dc-request' })
             else
                 print("[EXPOSEDGUARD] No Discord ID found for player: " .. GetPlayerName(playerId))
             end
